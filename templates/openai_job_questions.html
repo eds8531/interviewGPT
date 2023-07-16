@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>OpenAI API Example</title>
+</head>
+<body>
+    <h1>OpenAI API Example - Get questions</h1>
+    <form method="POST" action="/job_questions">
+        <label for="prompt">Enter a question index:</label>
+        <input type="text" name="prompt" id="prompt" required>
+        <button type="submit">Generate</button>
+    </form>
+    {% if prompt and generated_text %}
+        <h2>Generated Text:</h2>
+        <p>{{ generated_text }}</p>
+    {% endif %}
+</body>
+</html>

@@ -1,0 +1,21 @@
+version: '3'
+services:
+  db:
+    image: postgres:latest
+    ports:
+      - '5432:5432'
+    environment:
+      - POSTGRES_USER=interviewer_api
+      - POSTGRES_PASSWORD=wyvernfiles
+      - POSTGRES_DB=interviewer_db
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+  web:
+    image: flaskapp:test
+    ports:
+      - '5000:5000'
+    depends_on:
+      - db
+    environment:
+      - DATABASE_URL=postgresql://interviewer_api:wyvernfiles@db:5432/interviewer_db
+      - OPENAI_APIKEY=$OPENAI_APIKEY

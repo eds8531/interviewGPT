@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Interview</title>
+</head>
+<body>
+    <h1>Interview</h1>
+    <ul>
+        {% for message in messages %}
+        <li>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    
+    <form method="POST">
+        <label for="answer">Answer:</label>
+        <input type="text" name="answer" id="answer" required>
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>

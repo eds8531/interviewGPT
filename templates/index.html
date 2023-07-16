@@ -7,7 +7,23 @@
 
 <body>
     <h1>Interview Chatbot</h1>
-    <p>Please enter the job details:</p>
+
+    <p>Select from one of our popular jobs:</p>
+    <h1>Job Listings</h1>
+    <ul>
+        {% for job in jobs %}
+        <li>
+            <a href="{{job['interview_link']}}"">
+                
+            <strong>{{ job['title'] }}</strong>
+            </a> <br>
+            Requirements: {{ job['requirements'] }}<br>
+            Company: {{ job['company'] }}
+        </li>
+        {% endfor %}
+    </ul>
+
+    <p>Or create a personalized interview by entering the job details:</p>
     <form method="POST" action="{{ url_for('chat') }}">
         <label for="job">Job Title:</label>
         <input type="text" name="job" id="job"><br><br>
