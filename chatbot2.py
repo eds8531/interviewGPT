@@ -1,7 +1,7 @@
 import openai
 
 
-openai.api_key = "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"
+openai.api_key = "DM ME IF YOU NEED THE API KEY"
 
 def get_completion_from_messages(messages, model="gpt-3.5-turbo", temperature=0.6):
     response = openai.ChatCompletion.create(
