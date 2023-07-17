@@ -17,5 +17,9 @@ VALUES
 CREATE TABLE interviews (
     id                  SERIAL PRIMARY KEY,
     job_id              INTEGER REFERENCES jobs(id),
-    messages            VARCHAR
+    base_prompt         VARCHAR,
+    messages            VARCHAR,
+    completed           BOOLEAN,
+    prompt_tokens       INTEGER,
+    completion_tokens   INTEGER
 );

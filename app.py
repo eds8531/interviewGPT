@@ -19,6 +19,10 @@ openai.api_key = os.getenv('OPENAI_APIKEY')
 
 @app.route('/', methods=['GET', 'POST'])
 def interview():
+    if request.method == 'POST':
+        job = Jobs(title=request.form['title'], requirements=request.form['requirements'], company=request.form['company'])
+        db.session.add(job)
+        db.session.commit()
     jobs = [{**x.as_dict(), 'interview_link': f'/create_interview?job_id={x.id}'} for x in Jobs.query.all()]
     return render_template('index.html', jobs=jobs)
     
@@ -26,7 +30,7 @@ def interview():
 def create_interview():
     job_id = int(request.args.get('job_id'))
     job = Jobs.query.filter(Jobs.id==job_id).first()
-    interview = Interviews(job_id=job.id)
+    interview = Interviews(job_id=job.id, messages=json.dumps([]), completion_tokens=0, prompt_tokens=0)
     db.session.add(interview)
     db.session.commit()
     return redirect(f'/interview?id={interview.id}')
@@ -56,14 +60,9 @@ def conduct_interview():
     if interview.messages:
         messages = json.loads(interview.messages)
 
-    question_index = len(messages) // 2 + 1
-    question = get_job_questions(job=job.title, 
-                                 company=job.company, 
-                                 requirements=job.requirements, 
-                                 question_index=question_index,
-                                 messages=messages)
+    question = get_job_questions(job, interview)
     
-    messages.append(question)
+    messages.append(question['content'])
     interview.messages = json.dumps(messages)
     db.session.commit()
 

@@ -13,9 +13,9 @@
     <ul>
         {% for job in jobs %}
         <li>
-            <a href="{{job['interview_link']}}"">
+            <a href="{{job['interview_link']}}">
                 
-            <strong>{{ job['title'] }}</strong>
+            <strong>Start interview for {{ job['title'] }}</strong>
             </a> <br>
             Requirements: {{ job['requirements'] }}<br>
             Company: {{ job['company'] }}
@@ -24,14 +24,14 @@
     </ul>
 
     <p>Or create a personalized interview by entering the job details:</p>
-    <form method="POST" action="/chat">
+    <form method="POST" action="/">
         <label for="job">Job Title:</label>
-        <input type="text" name="job" id="job"><br><br>
+        <input type="text" name="title" id="title"><br><br>
         <label for="company">Company:</label>
         <input type="text" name="company" id="company"><br><br>
         <label for="requirements">Requirements:</label>
-        <textarea name="requirements" id="requirements"></textarea><br><br>
-        <input type="submit" value="Start Interview">
+        <textarea name="requirements" id="requirements" cols="50" rows="10"></textarea><br><br>
+        <input type="submit" value="Add Job">
     </form>
 </body>
 

@@ -1,6 +1,6 @@
 import json
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import Column, Float, Integer, BigInteger, ARRAY, String
+from sqlalchemy import Column, Float, Integer, BigInteger, ARRAY, String, Boolean
 
 db = SQLAlchemy()
 
@@ -24,6 +24,10 @@ class Interviews(db.Model):
     id = Column(Integer, primary_key=True)
     job_id = Column(Integer, db.ForeignKey('jobs.id'))
     messages = Column(String)
+    base_prompt = Column(String)
+    completed = Column(Boolean)
+    prompt_tokens = Column(Integer)
+    completion_tokens = Column(Integer)
 
 
     def as_dict(self):
