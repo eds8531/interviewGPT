@@ -2,6 +2,14 @@
 <html>
 <head>
     <title>Interview</title>
+    <script>
+        function handleKeyPress(event) {
+            if (event.keyCode === 13 && !event.shiftKey) {
+                event.preventDefault();
+                document.getElementById("answerForm").submit();
+            }
+        }
+    </script>
 </head>
 <body>
     <h1>Interview</h1>
@@ -11,10 +19,8 @@
         {% endfor %}
     </ul>
     
-    <form method="POST">
-        <label for="answer">Answer:</label>
-        <input type="text" name="answer" id="answer" required>
-        <button type="submit">Submit</button>
+    <form method="POST" id="answerForm">
+        <textarea name="answer" cols="50" rows="10" onkeypress="handleKeyPress(event)"></textarea>        <button type="submit">Submit</button>
     </form>
 </body>
 </html>

@@ -36,7 +36,12 @@ def conduct_interview():
 
     interview_id = int(request.args.get('id'))
     print('querying for interview id', interview_id)
-    job, interview = db.session.query(Jobs, Interviews).filter(Jobs.id==Interviews.job_id).filter(Interviews.id==interview_id).first()
+    job, interview = db.session.query(Jobs, Interviews)\
+        .filter(Jobs.id==Interviews.job_id)\
+        .filter(Interviews.id==interview_id)\
+        .first()
+    
+
     if request.method == 'POST':
         print(interview, interview.as_dict())
         messages = json.loads(interview.messages)
@@ -52,15 +57,17 @@ def conduct_interview():
         messages = json.loads(interview.messages)
 
     question_index = len(messages) // 2 + 1
-    question = get_job_questions(job=job.title, company=job.company, requirements=job.requirements, question_index=question_index)
+    question = get_job_questions(job=job.title, 
+                                 company=job.company, 
+                                 requirements=job.requirements, 
+                                 question_index=question_index,
+                                 messages=messages)
     
     messages.append(question)
-
     interview.messages = json.dumps(messages)
     db.session.commit()
 
     messages = json.loads(interview.messages)
-
     return render_template('interview.html', messages=messages)
 
 
