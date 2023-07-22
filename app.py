@@ -7,7 +7,7 @@ from models import Interviews, Jobs, db, startup_load
 
 app = Flask(__name__)
 
-db_url = os.environ.get('DATABASE_URL')
+db_url = os.environ.get('DATABASE_URL', "")
 local_dev_db = False
 if 'postgres' not in db_url:
     db_url = 'sqlite:///local-dev-interview.db'
