@@ -1,0 +1,123 @@
+html * {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+    width: 100%;
+    background-color: rgb(235, 248, 253);
+    margin: 0px 0px 0px 0px;
+    padding: 0px 0px 0px 0px;
+    
+}
+
+#job-details-outer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(196, 238, 255);
+    margin: 6px 0px 20px 0px;
+    padding:  0px 0px 0px 0px;
+
+}
+
+#job-details {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 200px;
+    /* border: 3px solid rgb(133, 133, 133);  */
+    width: 60%;
+    border-radius: 8px;
+    margin: 6px 6px 20px 6px;
+    background-color: rgb(221, 244, 253);
+}
+
+#job-details-text {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+#interview-div {
+    display: flex;
+    justify-content: center;
+    align-items: center;   
+}
+
+.bot-message {
+    background-color: rgb(171, 255, 171);
+    width: 80%;
+    margin-right: 0px;
+    margin-left: 100px;
+    max-width: 1200px;
+}
+
+.user-message {
+    background-color: rgb(193, 225, 255);
+    width: 80%;
+    margin-left: 0px;
+    margin-right: 100px;
+    max-width: 1200px;
+
+}
+
+ul {
+    width: 100%;
+}
+
+ul * {
+    font-size: 22px;
+}
+
+li {
+    padding: 10px;
+    margin: 10px 10px;
+    list-style-type: none;
+    border-radius:  8px;
+}
+
+#form-div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#form-inner-div {
+    display: flex; 
+    justify-content: center;
+    align-items: center; 
+}
+
+.form-group {
+    display: flex; 
+    justify-content: center;
+    align-items: center; 
+    margin-top: 10px
+}
+
+#answerForm {
+    position: relative;
+}
+
+#user-textarea {
+    width: 80%;
+    max-width: 1000px;
+    border-radius: 12px;
+    border-width: 4px;
+    border-color: black;
+    background-color: rgb(193, 225, 255);
+    /* margin-left: 40px; */
+    /* margin-right: 20px; */
+    margin: auto auto;
+    font-size: 22px;
+}
+
+#user-message-submit {
+    width: 140px;
+    height: 60px;
+    font-size: 22px;
+    /* border-radius: 12px;
+    position: absolute;
+    top: 50%;
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%); */
+    display: block;
+}

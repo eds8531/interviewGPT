@@ -35,3 +35,20 @@ class Interviews(db.Model):
 
 
 
+def startup_load(app, db):
+    with app.app_context():
+        db.create_all()
+
+        # Load initial data for Jobs table
+        initial_jobs_data = [{"title": "Developer", "requirements": "flask,git,html,css", "company": "yahoo"},
+            {"title": "Project Manager", "requirements": "jira,quality assurance,conflict/resolution", "company": "google"},
+            {"title": "DevOps Engineer", "requirements": "kubernetes,docker,ansible", "company": "facebook"}
+        ]
+        
+        for job_data in initial_jobs_data:
+            existing_job = Jobs.query.filter(Jobs.title==job_data['title']).first()
+            if not existing_job:
+                job = Jobs(**job_data)
+                db.session.add(job)
+        
+        db.session.commit()

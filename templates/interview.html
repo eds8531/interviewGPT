@@ -10,17 +10,52 @@
             }
         }
     </script>
+    <link rel="stylesheet" href="/static/styles.css" media="all" />
 </head>
 <body>
-    <h1>Interview</h1>
-    <ul>
-        {% for message in messages %}
-        <li>{{ message }}</li>
-        {% endfor %}
-    </ul>
+    <div id="job-details-outer">
+        <div id="job-details">
+            <div id="job-details-text">
+                <h1>Interview</h1>
+                <h2>Title: {{job.title}}</h2>
+                <h2>Requirements: {{job.requirements}}</h2>
+            </div>
+        </div>
+    </div>
+
     
-    <form method="POST" id="answerForm">
-        <textarea name="answer" cols="50" rows="10" onkeypress="handleKeyPress(event)"></textarea>        <button type="submit">Submit</button>
-    </form>
+
+    <div id="interview-div">
+        <div>
+            <div id="form-div">
+                <form method="POST" id="answerForm">
+                    <div id="form-inner-div">
+                        <div>
+                            <div class="form-group">
+                                <textarea name="answer" id="user-textarea" cols="80" rows="6" onkeypress="handleKeyPress(event)"></textarea>        
+                            </div>
+                            
+                            <div class="form-group">
+                                <button type="submit" id="user-message-submit">Submit</button>    
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <ul>
+                {% for entry in messages %}
+                    {% if entry['source'] == 'bot' %}
+                        <li class="bot-message">{{ entry['content'] }}</li>
+                    {% else %}
+                        <li class="user-message">{{ entry['content'] }}</li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        </div>
+
+    </div>
+   
+    
 </body>
 </html>

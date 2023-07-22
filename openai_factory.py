@@ -81,17 +81,18 @@ def complete_prompt(job, interview, generate_answer=False):
     completed_text = "Answer their question and then include 'the interview is completed' in the response. Provide some feedback on how their interview went and rate them 1-10"
     intermediate_text = "Ask the question to continue the interview using the interview sequence given. Only respond with the question. Do not tell the user what question they are on"
     maybe_completed_text = intermediate_text if not maybe_completed else completed_text
+    contents = [x['content'] for x in messages]
     if generate_answer:
         action = [{
             "role": "user",
-            "content": f"The interview is partially complete. Here is the current interview log: {'... '.join(messages)}. For reference you are on question {len(messages)//2} \
+            "content": f"The interview is partially complete. Here is the current interview log: {'... '.join(contents)}. For reference you are on question {len(contents)//2} \
                 {maybe_completed_text.replace('question', 'answer')} \
-                Try to provide a typical user answer to the last question asked. Basically pretend to be the user for this response. The last question was {messages[-1]} "
+                Try to provide a typical user answer to the last question asked. Basically pretend to be the user for this response. The last question was {contents[-1]} "
         }]
     else:
         action = [{
             "role": "user",
-            "content": f"The interview is partially complete. Here is the current interview log: {'... '.join(messages)}. For reference you are on question {len(messages)//2} \
+            "content": f"The interview is partially complete. Here is the current interview log: {'... '.join(contents)}. For reference you are on question {len(contents)//2} \
                 {maybe_completed_text} "
         }] 
 
@@ -118,7 +119,11 @@ def do_conversation():
     while len(messages) < 20:
         # get question
         question = get_job_questions(job, interview)
-        messages.append(question['content'])
+        bot_message = {
+            'content': question['content'],
+            'source': 'bot'
+        }
+        messages.append(bot_message)
         interview.prompt_tokens += question['prompt_tokens']
         interview.completion_tokens += question['completion_tokens']
         interview.messages = json.dumps(messages)
@@ -126,7 +131,11 @@ def do_conversation():
 
         # generate answer
         answer = get_job_questions(job, interview, generate_answer=True)
-        messages.append(answer['content'])
+        user_message = {
+            'content': answer['content'],
+            'source': 'user'
+        }
+        messages.append(user_message)
         interview.prompt_tokens += answer['prompt_tokens']
         interview.completion_tokens += answer['completion_tokens']
         interview.messages = json.dumps(messages)

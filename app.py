@@ -3,15 +3,23 @@ import openai
 from flask import Flask, render_template, request, redirect
 import os
 from openai_factory import get_job_questions, openai_bp
-from models import Interviews, Jobs, db
+from models import Interviews, Jobs, db, startup_load
 
 app = Flask(__name__)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
+db_url = os.environ.get('DATABASE_URL')
+local_dev_db = False
+if 'postgres' not in db_url:
+    db_url = 'sqlite:///local-dev-interview.db'
+    local_dev_db = True
+
+app.config['SQLALCHEMY_DATABASE_URI'] =  db_url
+
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = 'not-a-very-secure-key'
 
 db.init_app(app)
+
 
 app.register_blueprint(openai_bp)
 
@@ -49,7 +57,11 @@ def conduct_interview():
     if request.method == 'POST':
         print(interview, interview.as_dict())
         messages = json.loads(interview.messages)
-        messages.append(request.form['answer'])
+        user_message = {
+            "content": request.form['answer'],
+            "source": "user"
+        }
+        messages.append(user_message)
         interview.messages = json.dumps(messages)
         db.session.commit()
     
@@ -60,15 +72,24 @@ def conduct_interview():
     if interview.messages:
         messages = json.loads(interview.messages)
 
-    question = get_job_questions(job, interview)
-    
-    messages.append(question['content'])
-    interview.messages = json.dumps(messages)
-    db.session.commit()
+    if request.method == 'POST' or len(messages) == 0:
+        question = get_job_questions(job, interview)
+        bot_message = {
+            "content": question['content'],
+            "source": "bot"
+        }
+        messages.append(bot_message)
+        interview.messages = json.dumps(messages)
+        db.session.commit()
 
     messages = json.loads(interview.messages)
-    return render_template('interview.html', messages=messages)
+    # [::-1] reverses the list so that the latest messages are first
+    messages_with_index = [{**message, "index": i} for i, message in enumerate(messages[::-1])]
+    print(messages)
+    return render_template('interview.html', job=job, messages=messages_with_index)
 
 
 if __name__ == '__main__':
+    if local_dev_db:
+        startup_load(app, db)
     app.run(debug=True, host='0.0.0.0')
